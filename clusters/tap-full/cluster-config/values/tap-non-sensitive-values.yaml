@@ -1,0 +1,51 @@
+---
+tap_install:
+  values:
+    profile: full
+    ceip_policy_disclosed: true
+
+    excluded_packages:
+      - policy.apps.tanzu.vmware.com
+    
+    shared:
+      ingress_domain: "full.ab-tap.customer.io"
+    supply_chain: basic
+    ootb_supply_chain_basic:
+      registry:
+        server: tapautomation.azurecr.io
+        repository: "supply-chain"
+    buildservice:
+        kp_default_repository: tapautomation.azurecr.io/build-service
+        kp_default_repository_username: tapautomation
+        kp_default_repository_password: jhHMSgoMt0lRAwBmhyj8Nvyi5t+VXhcw
+    contour:
+      envoy:
+        service:
+          type: LoadBalancer
+    ootb_templates:
+      iaas_auth: true
+    tap_gui:
+      service_type: LoadBalancer
+      app_config:
+        catalog:
+          locations:
+            - type: url
+              target: https://github.com/sendjainabhi/tap/blob/main/catalog-info.yaml
+    metadata_store:
+      ns_for_export_app_cert: "default"
+      app_service_type: LoadBalancer
+    scanning:
+      metadataStore:
+        url: "metadata-store.full.ab-tap.customer.io"
+    grype:
+      namespace: "default"
+      targetImagePullSecret: "registry-credentials"
+    cnrs:
+      domain_name: full.ab-tap.customer.io
+    namespace_provisioner:
+      controller: false
+      gitops_install:
+        ref: origin/main
+        subPath: clusters/tap-full/cluster-config/namespaces
+        url: https://github.com/sendjainabhi/tap-gitops.git
+
